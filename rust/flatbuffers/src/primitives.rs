@@ -84,7 +84,7 @@ impl<T> Copy for WIPOffset<T> {}
 impl<T> Clone for WIPOffset<T> {
     #[inline]
     fn clone(&self) -> WIPOffset<T> {
-        WIPOffset::new(self.0.clone())
+        WIPOffset::new(self.0)
     }
 }
 impl<T> PartialEq for WIPOffset<T> {
@@ -113,12 +113,12 @@ impl<'a, T: 'a> WIPOffset<T> {
     /// Return a wrapped value that brings its meaning as a union WIPOffset
     /// into the type system.
     #[inline(always)]
-    pub fn as_union_value(&self) -> WIPOffset<UnionWIPOffset> {
+    pub fn as_union_value(self) -> WIPOffset<UnionWIPOffset> {
         WIPOffset::new(self.0)
     }
     /// Get the underlying value.
     #[inline(always)]
-    pub fn value(&self) -> UOffsetT {
+    pub fn value(self) -> UOffsetT {
         self.0
     }
 }
