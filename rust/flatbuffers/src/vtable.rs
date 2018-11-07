@@ -18,7 +18,7 @@ use endian_scalar::read_scalar_at;
 use follow::Follow;
 use primitives::*;
 
-/// VTable encapsulates read-only usage of a vtable. It is only to be used
+/// `VTable` encapsulates read-only usage of a vtable. It is only to be used
 /// by generated code.
 #[derive(Debug)]
 pub struct VTable<'a> {

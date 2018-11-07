@@ -20,7 +20,7 @@ use std::mem::{align_of, size_of};
 use endian_scalar::emplace_scalar;
 
 /// Trait to abstract over functionality needed to write values (either owned
-/// or referenced). Used in FlatBufferBuilder and implemented for generated
+/// or referenced). Used in `FlatBufferBuilder` and implemented for generated
 /// types.
 pub trait Push: Sized {
     type Output;
@@ -35,8 +35,8 @@ pub trait Push: Sized {
     }
 }
 
-/// Ensure Push alignment calculations are typesafe (because this helps reduce
-/// implementation issues when using FlatBufferBuilder::align).
+/// Ensure `Push` alignment calculations are typesafe (because this helps reduce
+/// implementation issues when using `FlatBufferBuilder::align`).
 pub struct PushAlignment(usize);
 impl PushAlignment {
     #[inline]
@@ -53,7 +53,7 @@ impl PushAlignment {
     }
 }
 
-/// Macro to implement Push for EndianScalar types.
+/// Macro to implement `Push` for `EndianScalar` types.
 macro_rules! impl_push_for_endian_scalar {
     ($ty:ident) => (
         impl Push for $ty {

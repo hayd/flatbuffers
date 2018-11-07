@@ -22,7 +22,7 @@ use endian_scalar::{emplace_scalar, read_scalar, read_scalar_at};
 use follow::Follow;
 use push::Push;
 
-pub const FLATBUFFERS_MAX_BUFFER_SIZE: usize = (1u64 << 31) as usize;
+pub const FLATBUFFERS_MAX_BUFFER_SIZE: usize = (1_u64 << 31) as usize;
 
 pub const FILE_IDENTIFIER_LENGTH: usize = 4;
 
@@ -49,32 +49,32 @@ pub const SIZE_VOFFSET: usize = SIZE_I16;
 
 pub const SIZE_SIZEPREFIX: usize = SIZE_UOFFSET;
 
-/// SOffsetT is an i32 that is used by tables to reference their vtables.
+/// `SOffsetT` is an i32 that is used by tables to reference their vtables.
 pub type SOffsetT = i32;
 
-/// UOffsetT is a u32 that is used by pervasively to represent both pointers
+/// `UOffsetT` is a u32 that is used by pervasively to represent both pointers
 /// and lengths of vectors.
 pub type UOffsetT = u32;
 
-/// VOffsetT is a i32 that is used by vtables to store field data.
+/// `VOffsetT` is a i32 that is used by vtables to store field data.
 pub type VOffsetT = i16;
 
-/// TableFinishedWIPOffset marks a WIPOffset as being for a finished table.
+/// `TableFinishedWIPOffset` marks a `WIPOffset` as being for a finished table.
 pub struct TableFinishedWIPOffset {}
 
-/// TableUnfinishedWIPOffset marks a WIPOffset as being for an unfinished table.
+/// `TableUnfinishedWIPOffset` marks a `WIPOffset` as being for an unfinished table.
 pub struct TableUnfinishedWIPOffset {}
 
-/// UnionWIPOffset marks a WIPOffset as being for a union value.
+/// `UnionWIPOffset` marks a `WIPOffset` as being for a union value.
 pub struct UnionWIPOffset {}
 
-/// VTableWIPOffset marks a WIPOffset as being for a vtable.
+/// `VTableWIPOffset` marks a `WIPOffset` as being for a vtable.
 pub struct VTableWIPOffset {}
 
-/// WIPOffset contains an UOffsetT with a special meaning: it is the location of
+/// `WIPOffset` contains an `UOffsetT` with a special meaning: it is the location of
 /// data relative to the *end* of an in-progress FlatBuffer. The
-/// FlatBufferBuilder uses this to track the location of objects in an absolute
-/// way. The impl of Push converts a WIPOffset into a ForwardsUOffset.
+/// `FlatBufferBuilder` uses this to track the location of objects in an absolute
+/// way. The impl of Push converts a `WIPOffset` into a `ForwardsUOffset`.
 #[derive(Debug)]
 pub struct WIPOffset<T>(UOffsetT, PhantomData<T>);
 
@@ -101,7 +101,7 @@ impl<T> Deref for WIPOffset<T> {
     }
 }
 impl<'a, T: 'a> WIPOffset<T> {
-    /// Create a new WIPOffset.
+    /// Create a new `WIPOffset`.
     #[inline]
     pub fn new(o: UOffsetT) -> WIPOffset<T> {
         WIPOffset {
@@ -110,7 +110,7 @@ impl<'a, T: 'a> WIPOffset<T> {
         }
     }
 
-    /// Return a wrapped value that brings its meaning as a union WIPOffset
+    /// Return a wrapped value that brings its meaning as a union `WIPOffset`
     /// into the type system.
     #[inline(always)]
     pub fn as_union_value(self) -> WIPOffset<UnionWIPOffset> {
@@ -142,7 +142,7 @@ impl<T> Push for ForwardsUOffset<T> {
     }
 }
 
-/// ForwardsUOffset is used by Follow to traverse a FlatBuffer: the pointer
+/// `ForwardsUOffset` is used by `Follow` to traverse a FlatBuffer: the pointer
 /// is incremented by the value contained in this type.
 #[derive(Debug)]
 pub struct ForwardsUOffset<T>(UOffsetT, PhantomData<T>);
@@ -163,7 +163,7 @@ impl<'a, T: Follow<'a>> Follow<'a> for ForwardsUOffset<T> {
     }
 }
 
-/// ForwardsVOffset is used by Follow to traverse a FlatBuffer: the pointer
+/// `ForwardsVOffset` is used by `Follow` to traverse a FlatBuffer: the pointer
 /// is incremented by the value contained in this type.
 #[derive(Debug)]
 pub struct ForwardsVOffset<T>(VOffsetT, PhantomData<T>);
@@ -193,7 +193,7 @@ impl<T> Push for ForwardsVOffset<T> {
     }
 }
 
-/// ForwardsSOffset is used by Follow to traverse a FlatBuffer: the pointer
+/// `ForwardsSOffset` is used by `Follow` to traverse a FlatBuffer: the pointer
 /// is incremented by the *negative* of the value contained in this type.
 #[derive(Debug)]
 pub struct BackwardsSOffset<T>(SOffsetT, PhantomData<T>);
@@ -223,7 +223,7 @@ impl<T> Push for BackwardsSOffset<T> {
     }
 }
 
-/// SkipSizePrefix is used by Follow to traverse a FlatBuffer: the pointer is
+/// `SkipSizePrefix` is used by `Follow` to traverse a FlatBuffer: the pointer is
 /// incremented by a fixed constant in order to skip over the size prefix value.
 pub struct SkipSizePrefix<T>(PhantomData<T>);
 impl<'a, T: Follow<'a> + 'a> Follow<'a> for SkipSizePrefix<T> {
@@ -234,7 +234,7 @@ impl<'a, T: Follow<'a> + 'a> Follow<'a> for SkipSizePrefix<T> {
     }
 }
 
-/// SkipRootOffset is used by Follow to traverse a FlatBuffer: the pointer is
+/// `SkipRootOffset` is used by `Follow` to traverse a FlatBuffer: the pointer is
 /// incremented by a fixed constant in order to skip over the root offset value.
 pub struct SkipRootOffset<T>(PhantomData<T>);
 impl<'a, T: Follow<'a> + 'a> Follow<'a> for SkipRootOffset<T> {
@@ -245,7 +245,7 @@ impl<'a, T: Follow<'a> + 'a> Follow<'a> for SkipRootOffset<T> {
     }
 }
 
-/// FileIdentifier is used by Follow to traverse a FlatBuffer: the pointer is
+/// `FileIdentifier` is used by `Follow` to traverse a FlatBuffer: the pointer is
 /// dereferenced into a byte slice, whose bytes are the file identifer value.
 pub struct FileIdentifier;
 impl<'a> Follow<'a> for FileIdentifier {
@@ -256,7 +256,7 @@ impl<'a> Follow<'a> for FileIdentifier {
     }
 }
 
-/// SkipFileIdentifier is used by Follow to traverse a FlatBuffer: the pointer
+/// `SkipFileIdentifier` is used by `Follow` to traverse a FlatBuffer: the pointer
 /// is incremented by a fixed constant in order to skip over the file
 /// identifier value.
 pub struct SkipFileIdentifier<T>(PhantomData<T>);
@@ -271,7 +271,7 @@ impl<'a, T: Follow<'a> + 'a> Follow<'a> for SkipFileIdentifier<T> {
 /// Follow trait impls for primitive types.
 ///
 /// Ideally, these would be implemented as a single impl using trait bounds on
-/// EndianScalar, but implementing Follow that way causes a conflict with
+/// `EndianScalar`, but implementing `Follow` that way causes a conflict with
 /// other impls.
 macro_rules! impl_follow_for_endian_scalar {
     ($ty:ident) => (

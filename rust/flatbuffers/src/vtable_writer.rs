@@ -19,7 +19,7 @@ use std::ptr::write_bytes;
 use endian_scalar::{emplace_scalar, read_scalar};
 use primitives::*;
 
-/// VTableWriter compartmentalizes actions needed to create a vtable.
+/// `VTableWriter` compartmentalizes actions needed to create a vtable.
 #[derive(Debug)]
 pub struct VTableWriter<'a> {
     buf: &'a mut [u8],
@@ -34,7 +34,7 @@ impl<'a> VTableWriter<'a> {
     /// Writes the vtable length (in bytes) into the vtable.
     ///
     /// Note that callers already need to have computed this to initialize
-    /// a VTableWriter.
+    /// a `VTableWriter`.
     ///
     /// In debug mode, asserts that the length of the underlying data is equal
     /// to the provided value.

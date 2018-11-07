@@ -25,7 +25,7 @@ use std::marker::PhantomData;
 /// path.
 ///
 /// Writing a new Follow implementation primarily involves deciding whether
-/// you want to return data (of the type Self::Inner) or do you want to
+/// you want to return data (of the type `Self::Inner`) or do you want to
 /// continue traversing the FlatBuffer.
 pub trait Follow<'a> {
     type Inner;
@@ -39,7 +39,7 @@ pub fn lifted_follow<'a, T: Follow<'a>>(buf: &'a [u8], loc: usize) -> T::Inner {
     T::follow(buf, loc)
 }
 
-/// FollowStart wraps a Follow impl in a struct type. This can make certain
+/// `FollowStart` wraps a Follow impl in a struct type. This can make certain
 /// programming patterns more ergonomic.
 #[derive(Debug)]
 pub struct FollowStart<T>(PhantomData<T>);
